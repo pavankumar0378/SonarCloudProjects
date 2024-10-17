@@ -35,7 +35,7 @@ jobs:
         with:
           projectBaseDir: ./demo_project # Path to your React app
           args: >
-            -Dproject.settings=../sonar-project.properties  # Path to properties file
+            -Dproject.settings=../sonar-project.properties
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -47,7 +47,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./SonarCloudProjects/demo_project
+        working-directory: ./demo_project
 
     steps:
       - uses: actions/checkout@v2
