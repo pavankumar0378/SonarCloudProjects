@@ -12,9 +12,10 @@ jobs:
     if: startsWith(github.head_ref, 'FE_') && github.event.pull_request.merged == false
     name: SonarCloud
     runs-on: ubuntu-latest
+
     defaults:
       run:
-        working-directory: ./demo_project # Ensure to set the working directory for each step
+        working-directory: ./demo_project
 
     steps:
       - uses: actions/checkout@v2
@@ -35,9 +36,6 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: ./demo_project
-          args: |
-            -Dsonar.projectKey=pavankumar0378_SonarCloudProjects
-            -Dsonar.organization=pavankumar0378
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -46,6 +44,7 @@ jobs:
     if: github.event.pull_request.merged == true
     name: Branch Analysis on PR merge
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: ./demo_project # Ensure to set the working directory for each step
@@ -69,7 +68,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: ./demo_project
-          args: |
+          args: >
             -Dsonar.branch.name=main
             -Dsonar.projectKey=pavankumar0378_SonarCloudProjects
             -Dsonar.organization=pavankumar0378
