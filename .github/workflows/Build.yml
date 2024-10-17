@@ -1,75 +1,130 @@
-name: Build
+# name: Build
 
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     types: [opened, synchronize, reopened, closed]
+
+# jobs:
+#   sonarcloud:
+#     if: startsWith(github.head_ref, 'FE_') && github.event.pull_request.merged == false
+#     name: SonarCloud
+#     runs-on: ubuntu-latest
+
+#     defaults:
+#       run:
+#         working-directory: ./demo_project # Ensure to set the working directory for each step
+
+#     steps:
+#       - uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0 # Shallow clones should be disabled for better relevancy of analysis
+
+#       - name: Install Dependencies
+#         run: |
+#           npm install --legacy-peer-deps
+#           npm install @testing-library/react @testing-library/dom --save-dev
+#         working-directory: ./demo_project
+
+#       - name: Test and coverage
+#         run: npm test -- --coverage
+#         working-directory: ./demo_project
+
+#       - name: SonarCloud Scan
+#         uses: SonarSource/sonarcloud-github-action@master
+#         with:
+#           projectBaseDir: ./demo_project
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # Needed to get PR information, if any
+#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+#   branchAnalysis:
+#     if: github.event.pull_request.merged == true
+#     name: Branch Analysis on PR merge
+#     runs-on: ubuntu-latest
+
+#     defaults:
+#       run:
+#         working-directory: ./demo_project # Ensure to set the working directory for each step
+
+#     steps:
+#       - uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0 # Shallow clones should be disabled for better relevancy of analysis
+
+#       - name: Install Dependencies
+#         run: |
+#           npm install --legacy-peer-deps
+#           npm install @testing-library/react @testing-library/dom --save-dev
+#         working-directory: ./demo_project
+
+#       - name: Test and coverage
+#         run: npm test -- --coverage
+#         working-directory: ./demo_project
+
+#       - name: SonarCloud Scan
+#         uses: SonarSource/sonarcloud-github-action@master
+#         with:
+#           projectBaseDir: ./demo_project
+#           args: >
+#             -Dsonar.branch.name=main
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # Needed to get PR information, if any
+#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+name: Build
 on:
   push:
     branches:
       - master
   pull_request:
     types: [opened, synchronize, reopened, closed]
-
 jobs:
   sonarcloud:
     if: startsWith(github.head_ref, 'FE_') && github.event.pull_request.merged == false
     name: SonarCloud
     runs-on: ubuntu-latest
-
     defaults:
       run:
-        working-directory: ./demo_project # Ensure to set the working directory for each step
-
+        working-directory: ./demo_project # Updated directory name
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # Shallow clones should be disabled for better relevancy of analysis
-
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: Install Dependencies
-        run: |
-          npm install --legacy-peer-deps
-          npm install @testing-library/react @testing-library/dom --save-dev
-        working-directory: ./demo_project
-
+        run: npm install --legacy-peer-deps
       - name: Test and coverage
-        run: npm test -- --coverage
-        working-directory: ./demo_project
-
+        run: npm test src/
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
         with:
-          projectBaseDir: ./demo_project
+          projectBaseDir: ./demo_project # Updated directory name
+        uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  branchAnalysis:
+  branchAnalysis: # to get the branch analysis on merge
     if: github.event.pull_request.merged == true
     name: Branch Analysis on PR merge
     runs-on: ubuntu-latest
-
     defaults:
       run:
-        working-directory: ./demo_project # Ensure to set the working directory for each step
-
+        working-directory: ./demo_project # Updated directory name
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # Shallow clones should be disabled for better relevancy of analysis
-
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: Install Dependencies
-        run: |
-          npm install --legacy-peer-deps
-          npm install @testing-library/react @testing-library/dom --save-dev
-        working-directory: ./demo_project
-
+        run: npm install --legacy-peer-deps
       - name: Test and coverage
-        run: npm test -- --coverage
-        working-directory: ./demo_project
-
+        run: npm test src/
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
         with:
-          projectBaseDir: ./demo_project
+          projectBaseDir: ./demo_project # Updated directory name
           args: >
             -Dsonar.branch.name=main
+        uses: SonarSource/sonarcloud-github-action@master
         env:
-          GIT_TOKEN: ${{ secrets.GIT_TOKEN }} # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
