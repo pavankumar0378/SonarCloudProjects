@@ -70,8 +70,6 @@ jobs:
           projectBaseDir: ./demo_project
           args: >
             -Dsonar.branch.name=main
-            -Dsonar.projectKey=pavankumar0378_SonarCloudProjects
-            -Dsonar.organization=pavankumar0378
         env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # Needed to get PR information, if any
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
